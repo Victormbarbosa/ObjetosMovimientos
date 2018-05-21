@@ -90,6 +90,11 @@ public class AñadirInformacion extends javax.swing.JFrame {
         getContentPane().add(ButAsig, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 100, 30));
 
         ButtTemas.setText("Agregar +");
+        ButtTemas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtTemasActionPerformed(evt);
+            }
+        });
         getContentPane().add(ButtTemas, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 100, 30));
 
         ComboAsignatura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "..." }));
@@ -144,6 +149,10 @@ public class AñadirInformacion extends javax.swing.JFrame {
             temp = e.concatenar(x);
             e.guardar(temp, x, Asig+";");
             ComboAsignatura.addItem(Asig);
+            File carpeta = new File("Profesor/"+Asig);
+            carpeta.mkdirs();
+            File fichero = new File("Profesor/"+Asig+"/Temas.txt");
+            fichero.createNewFile();
         } catch (IOException ex) {
             Logger.getLogger(AñadirInformacion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,6 +162,8 @@ public class AñadirInformacion extends javax.swing.JFrame {
     private void ComboAsignaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboAsignaturaActionPerformed
         String Asignatura = (String) ComboAsignatura.getSelectedItem();
         Metodos e = new Metodos();
+        ComboTemas.removeAllItems();
+        ComboTemas.addItem("...");
         try {
             e.Generador_de_Combobox("Profesor/" + Asignatura + "/Temas.txt", ComboTemas);
         } catch (IOException ex) {
@@ -163,6 +174,28 @@ public class AñadirInformacion extends javax.swing.JFrame {
     private void ComboTemasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboTemasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ComboTemasActionPerformed
+
+    private void ButtTemasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtTemasActionPerformed
+        String tema = JOptionPane.showInputDialog(null, "Digite el Tema que desea agregar");
+        Metodos e = new Metodos();
+        String r = (String) ComboAsignatura.getSelectedItem();
+        String x = "Profesor/"+r+"/Temas.txt";
+        String temp = null;
+        try {
+            temp = e.concatenar(x);
+            e.guardar(temp, x, tema+";");
+            ComboTemas.addItem(tema);
+            File carpeta = new File("Profesor/"+r+"/"+tema);
+            carpeta.mkdirs();
+            File fichero = new File("Profesor/"+r+"/"+tema+"/Preguntas.txt");
+            fichero.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(AñadirInformacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ButtTemasActionPerformed
 
     /**
      * @param args the command line arguments
